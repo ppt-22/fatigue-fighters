@@ -1,0 +1,2103 @@
+Helix TQL Reference Guide Release
+2023.1
+Contents
+TQL overview. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+Version 3.0 updates. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+Regular Expressions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+Functions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+Subsearch. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+Version 2.0 updates. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+Migration. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+Syntax. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+Rules. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+Subsearch. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+Has and missing filters. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+Exists filter. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+Anatomy of a TQL query. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+Filter section. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+Search clauses. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+Directive clauses. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+Transform section. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+Searches. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+Regular expressions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+Regular expression restrictions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+Free-form static search. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+Syntax elements. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+Quotes. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+Numbers. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+Date and time. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+Guidelines for date and time searches. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+Exact date and time. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+Relative date and time. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+Off-hour activity. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18
+Set notation. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+Boolean operators. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+Comparison operators. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+Range notation. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+Functions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+Has. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+Missing. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+Length. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+Equal. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+Cryptographic hash. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+Wildcards. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+Parenthetical expressions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+Subsearch and variable expansion. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+Subsearch. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+Variable expansion. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25
+Subsearch with variable expansion. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+Directives. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+Transforms. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+Groupby. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 27
+Histogram. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 29
+Sort. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 31
+Table. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33
+Taxonomy. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+Classes. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34
+Metaclasses. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+Metaclass definitions. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+Metaclass tokenization. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 37
+Commonly used taxonomy. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+General event information. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+Alert and malware information. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 38
+Network connection information. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 39
+HTTP request information. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 41
+DNS request information. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 42
+File transfer information. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 43
+Authentication information. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+Email information. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+Windows. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 45
+Fields. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 46
+Searching within nested objects. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+Aliases. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+~ipv4. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 48
+~srcipv4. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+~dstipv4. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+~ipv6. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+~srcipv6. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+~dstipv6. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51
+~host. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51
+~id. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 52
+~mac. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+~port. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55
+~interface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 56
+~hash. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 56
+~reg. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57
+Best practices. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 57
+TQL cheatsheet and use cases. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 58
+Basic TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 58
+Intel hit TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 58
+Asset-based TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 59
+Traffic validation and network visibility check TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 60
+Alert TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 61
+Bro-specific TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 62
+Bro Conn TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 63
+Bro HTTP TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 64
+Bro file TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 65
+Bro notice TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 67
+Bro DNS TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 68
+Bro FTP TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 69
+Bro SSH TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 69
+Bro software TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 69
+Bro Tunnel TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 69
+Bro SMTP TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 69
+Use case TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 70
+Metaclass http_proxy TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 72
+Nonspecific evidence TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 73
+Juniper VPN evidence TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 73
+Cisco ASA evidence TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 74
+BlueCoat http_proxy TQL queries. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 74
+1| TQL overview
+TQL overview
+Trellix Query Language (TQL) is a data analysis language used in queries to retrieve events for further analysis. TQL queries are
+used in searches and rules in Helix, and other Trellix products.
+Note
+TQL was previously called MQL. You still use and see mql in TQL queries.
+Version 3.0 updates
+Trellix Query Language (TQL) 3.0 is a major upgrade to the TQL query syntax. This update introduces a new parsing library that
+does not accept certain syntax in search and rule queries.
+Regular Expressions
+The following regular expression constructs are not supported in Helix rules as of TQL 3.0:
+• Back references and capturing sub-expressions
+• Arbitrary zero-width assertions
+• Subroutine references and recursive patterns
+• Conditional patterns
+• Backtracking control verbs
+• The \C "single-byte" directive (which breaks UTF-8 sequences)
+• The \R newline match
+• The \K start of match reset directive
+• Callouts and embedded code
+• Atomic grouping and possessive quantifiers
+Functions
+The following syntax is not supported in functions as of TQL 3.0.
+• Missing—The only syntax that works for rules is missing:field or missing=field. There are no limitations for search.
+• Cryptographic Hash—The md5, sha1, sha256, sha384, and sha512 functions now support only a field name. The optional
+format that controls the format of the message digest is no longer supported. For example, md5(class, base64) =
+CY9rzUYh03PK3k6DJie09g== is not supported.
+Subsearch
+6 Helix TQL Reference Guide Release 2023.1
+1| TQL overview
+Subsearch is only supported in search as of TQL 3.0. It will not work in rules.
+Version 2.0 updates
+Trellix Query Language (TQL) 2.0 is a major update to the TQL query syntax. This update brings many new features and unifies
+the search and rules query languages under a single syntax.
+Migration
+Such a major update requires changes to the previous syntax. The following sections describe how to adjust the way you use TQL
+to be compliant with version 2.0.
+Syntax
+TQL 2.0 has stricter syntax rules for directives and transforms. Directives must now be enclosed in curly braces ( { } ) and be
+placed after any filters and before the pipe ( | ) character that precedes transform clauses (if any). See Directives for details.
+The pipe character must be surrounded on either side by white space. For example, the following query, which would have been
+acceptable in previous versions of TQL:
+class=test |groupby class
+must now be rewritten as:
+class=test | groupby class
+Wildcards (see Wildcards ) specified before the query string searches for any term that end with the query string. For example,
+the following query:
+class=*.com
+will now return results that end with .com. In previous versions of TQL, the same query would have searched for the exact
+term .com.
+Rules
+Rules using search-specific features, such as transforms or subsearch, are now disabled. Previously, these rules could be created,
+but they would not function. Newly created rules that attempt to use these features will provide the appropriate error.
+Subsearch
+Subsearch now respects the difference between the equality ( = ) and match ( : ) operators, the same way normal filters do. In
+previous versions of TQL, all subsearches would behave as if you had used the equality ( = ) operator. See Subsearch for details.
+Helix TQL Reference Guide Release 2023.1 7
+1| TQL overview
+Has and missing filters
+In previous versions of TQL, there were two special filters, has and missing. These two special filters are now incorporated into
+the expanded set of functions available in TQL (see Functions ) and are now deprecated. They will continue to work using the old
+syntax, but Trellix recommends that you move to the new syntax described in Functions because support might be removed in a
+future version.
+Exists filter
+The exists filter functioned as the rules equivalent to the has function in previous TQL versions. This filter has been removed
+in TQL 2.0. Existing rules using the exists filter will still continue to function; however, Trellix recommends that you rewrite your
+rules to use the has function as soon as possible.
+8 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Anatomy of a TQL query
+The following diagram depicts the high-level anatomy of an TQL query.
+The filter section is specified to the left of the pipe; the transform section of the query is specified to the right of the pipe.
+Each TQL query can use three types of clauses: searches, directives, and transforms.
+• Searches
+• Directives
+• Transforms
+These clause types are used on different sides of the pipe in the TQL query anatomy. Searches and directives are specified in the
+filter section; transforms are specified in the transform section.
+TQL supports an unlimited nesting of queries; however performance may slow depending on the result set.
+The fields available to include in queries are based on the taxonomy. Those fields include classes and alias options.
+All fields and values are lowercase.
+Filter section
+The filter section consists of search clauses followed by directive clauses.
+Search clauses
+Search clauses include regular (including parenthetical) expressions and free-form static searches. These expressions usually
+take the format of a field-value pair. They identify the data that should be located using exact matches, comparisons, ranges, and
+expressions.
+Searches include:
+• Regular expressions
+• Free-form static search
+• Quotes
+• Numbers
+Helix TQL Reference Guide Release 2023.1 9
+2| Anatomy of a TQL query
+• Date and time
+• Set notation
+• Boolean operators
+• Comparison operators
+• Range notation
+• Functions
+• Wildcards
+• Parenthetical expressions
+• Subsearch and variable expansion
+• Subsearch with variable expansion
+For more information about search clauses, see Searches.
+Directive clauses
+Directive clauses are modifiers that instruct the search engine how to perform the query. They include:
+• Limit
+• Page_size
+• Offset
+• Start
+• End
+For complete information, see Directives.
+Transform section
+The transform section consists of transform clauses. Transform clauses allow you to modify the way the query results are
+returned and displayed. They are separated from the rest of the TQL query by a pipe symbol (|). Transforms include:
+• Groupby
+• Histogram
+• Sort
+• Table
+For more information on transform clauses, see Transforms.
+Searches
+A search clause in TQL specifies the data to be located based on exact matches, comparisons, ranges, and expressions.
+10 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+They include regular (including parenthetical) expressions and free-form static searches. These expressions usually take the
+format of a field-value pair. They identify the data that should be located using exact matches, comparisons, ranges, and
+expressions.
+This section covers the following:
+• Regular expressions
+• Free-form static search
+• Syntax elements
+Regular expressions
+Important
+Certain regular expression types are not supported in Helix rules as of TQL 3.0. For a list of the types, see Version 3.0
+Updates .
+Rule TQL supports full Perl Compatible regular expressions; however, anchors must be explicit for the beginning and end of line
+matches. If explicit anchors are not defined in a rules query, then Rule TQL will instead perform a substring match for the term.
+For example, to match a uri field of “index.php”, the regular expression must be formatted as:
+uri:/index\.php\?/.
+Additionally, you can use the caret symbol ( ^ ) to search fields at the beginning of a rule and use the dollar sign ( $ ) to search
+fields at the end of a rule. For example, if you want to look for index.php at the beginning of a field in a rule, you should use:
+uri:/^index\.php/
+Any characters may be used, but certain characters are reserved and must be escaped. The reserved characters are:
+. ? + | { } [ ] ( ) " \
+Any reserved character (including a backslash) can be escaped with a backslash (for example, "\+").
+Any characters (except double quotes) are interpreted literally when surrounded by double quotes.
+Note
+In regular expressions, do not enclose strings with single or double quotation marks.
+A period “.” can be used to represent any character.
+The plus sign "+" can be used to repeat the preceding shortest pattern one or more times.
+Helix TQL Reference Guide Release 2023.1 11
+2| Anatomy of a TQL query
+The question mark "?" makes the preceding shortest pattern optional. It matches zero or one times.
+Curly brackets "{}" can be used to specify a minimum and (optionally) a maximum number of times the preceding shortest
+pattern can repeat. The allowed forms are:
+Form Meaning
+{5} repeat exactly 5 times
+{2,5} repeat at least twice and at most 5 times
+{2,} repeat at least twice
+Parentheses "()" can be used to form subpatterns.
+The pipe symbol "|" acts as an OR operator. The match will succeed if the pattern on either the left-hand side OR the right-hand
+side matches. The alternation applies to the longest pattern, not the shortest.
+Ranges of potential characters may be represented as character classes by enclosing them in square brackets "[]". A leading ^
+negates the character class. The allowed forms are:
+Form Meaning
+[abc] 'a' or 'b' or 'c'
+[a-c] 'a' or 'b' or 'c'
+[-abc] '-' or 'a' or 'b' or 'c'
+[abc\-] '-' or 'a' or 'b' or 'c'
+[^a-c] any character except 'a' or 'b' or 'c'
+Note that the dash "-" indicates a range of characters, unless it is the first character or if it is escaped with a backslash.
+Regular expression restrictions
+TQL queries using regular expressions are restricted to a maximum of 50,000 results. If a query using regular expressions would
+generate more than 50,000 results, those results will not be displayed, and an error will be generated.
+12 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+You can use the limit directive to ensure that your results do not exceed 50,000. Note that the limit directive specifies how many
+items will be searched, not how many results are returned. For more information, see Directives.
+You cannot use regular expressions to search on rawmsg.
+Free-form static search
+A free-form static search is a TQL query term that does not have a field specified. When a free-form static search is part of a
+TQL query, Helix searches for it against the raw message index. In the following example, stuff.php would be a free-form static
+search and would be queried against the raw message index.
+metaclass=http_proxy stuff.php useragent="Chrome"
+Syntax elements
+Search clause regular expressions can make use of the following syntax elements.
+• Quotes
+• Numbers
+• Date and time
+• Set notation
+• Boolean operators
+• Comparison operators
+• Range notation
+• Functions
+• Wildcards
+• Parenthetical expressions
+• Subsearch and variable expansion
+Quotes
+Use “ “ (double quotes) or ‘ ‘ (single quotes) to search for the following:
+• A space or an exact string that includes a space
+• Keywords such as “and” or “or”
+• Strings that are not part of regular expressions
+For example:
+count>"4" not count>4
+description:/wmps/ not description:"/wmps/"
+To search for quotes, use the escape. For double quotes escape, use the following:
+Helix TQL Reference Guide Release 2023.1 13
+2| Anatomy of a TQL query
+• \“
+For single quote escape, use the following:
+• \’
+Note
+You may see ` (a back quote) in the query field of an alert. Back quotes work the same way as single quotes and double
+quotes.
+Numbers
+TQL syntax supports the following for numbers:
+• Negative “-“ and positive “+” signs
+• Exponent as ‘e’ or ‘E’
+• Fraction as ‘.’ digit
+• Fraction exponent as ‘fracexp’
+Important
+Encapsulate all string patterns in quotation marks. For example, using an e or E in a number that is not encapsulated will
+convert the numbers that follow the exponent to an exponential value. For more information, see Quotes.
+Date and time
+The calendar widget in the Helix Web UI allows you to select a date range for a search. For example, you can enter
+class=fireeye_nx in the search bar, select Past Hour from the calendar, and run the search. The results will include only
+Network Security events that Helix received within the past hour. For details about using the calendar widget, see the Helix
+Enterprise Product Guide.
+The calendar widget is the recommended method for selecting a date range. However, you can also enter date and time
+taxonomy in the search bar to refine the selected calendar range or specify a range that exceeds what the calendar accepts.
+For example, you can do the following:
+• Search for events from the first three months of 2022. This is useful because Index search stores alert data for a longer
+period than you can select in the calendar widget in the Helix Web UI.
+• Limit the search to a maximum of 23 hours of data starting 24 hours ago.
+• Match against events within a specific time range, such as 10 minutes.
+• Search for user activity that occurred outside normal working hours, such as connecting to a VPN.
+14 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Commonly searched timestamp fields include eventtime and meta_ts.
+• eventtime (or eventtimeutc) is created when a log event (such as a user opening a PDF file) occurs in your network. This
+timestamp is a parsed taxonomy field in the event details section in the Helix Web UI.
+Note
+An event may not include either timestamp.
+• meta_ts is created when a log ingestion device or service receives that log event from your environment and sends it to
+Helix. This timestamp is displayed in the UTC field at the top left of the event details. The meta_ts timestamp tracks the
+event through the Helix lifecycle. Search results are displayed in meta_ts timestamp order by default.
+The meta_ts timestamp is used to evaluate start and end expressions. Start and end expressions in TQL queries take
+precedence over the date and time range defined in the calendar widget.
+To simplify referencing, Helix converts timestamps in taxonomy fields into UTC. The Helix uniform timestamp format follows:
+YYYY-MM-DDThh:mm:ss.sssZ
+where:
+• T indicates that the next value will be a time value.
+• Z indicates that the timestamp is Zulu (UTC) time.
+For example:
+2022-03-20T19:33:12.000Z refers to March 20, 2022, 7:33:12 p.m. Zulu time.
+Note
+If there is no time zone indicator, times are formatted in UTC.
+Guidelines for date and time searches
+Note the following guidelines for date and time searches:
+Helix TQL Reference Guide Release 2023.1 15
+2| Anatomy of a TQL query
+• The date and time you type in the search bar must be enclosed in single or double quotation marks (for example,
+eventtime>"2022-04-07T01:10"). If you use a pivot option from a parsed field to add a date and time to the search,
+quotation marks may be automatically included. For details about pivot options, see the Helix Enterprise Product Guide.
+• A time cannot be searched without a preceding date.
+• A date or a date and time cannot be searched directly in TQL. The date or date and time must follow a timestamp field
+and operator in a search string.
+• To evaluate a query using time values located in another field, you must specify that field.
+Exact date and time
+TQL supports searches based on exact date and time using the following syntax.
+yyyy-mm-dd Calendar date with the year, month, and day
+yyyy-mm Calendar date with the year and month
+where:
+• yyyy is the year in 4-digit number format
+• mm is the month in 2-digit number format
+• dd is the day in 2-digit number format
+hhmmss Hours, minutes, and seconds
+hh:mm Hours and minutes
+where:
+• hh is the hour in 2-digit format
+• mm is the minute in 2-digit format
+• ss is the second in 2-digit format
+Examples:
+eventtime='2022-04-08T21:00:49.669Z'
+Returns events that occurred at 9:00:47.669 p.m. on April 8, 2022.
+eventtime="2022-04-08T19"
+Returns events that occurred during the hour of 7:00 p.m. on April 8, 2022.
+16 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+eventtime>"2022-04-08T23:00:00"
+Returns events that occurred after 11:00 p.m. on April 8, 2022.
+endtime='2022-04-08T15:24:55.157Z'
+Returns events with an end time of 3:24:55.157 p.m. on April 8, 2022.
+eventtime>"2022-04-07T01:10" eventtime<"2022-04-07T01:20"
+Returns events that occurred within the specified 10-minute time range.
+Relative date and time
+TQL supports relative time searches using keywords such as the following.
+yesterday
+today
+last hour
+last day
+last week
+last month
+last year
+X hours ago
+X days ago
+X weeks ago
+X months ago
+X years ago
+where
+X
+is a number.
+start
+end
+where
+start
+is the earliest timestamp to return and
+end
+is the latest timestamp to return.
+Examples
+class=alerts start:'2022-01-01T00:00:00Z' end:'2022-03-31T23:59:59Z'
+Returns events from the first three months of 2022.
+Helix TQL Reference Guide Release 2023.1 17
+2| Anatomy of a TQL query
+srccountrycode=ru start:"24 hours ago" end:"1 hour ago"
+Limits the search to a maximum of 23 hours of data starting 24 hours ago.
+Off-hour activity
+TQL supports searches used to monitor user and service account activities that occur outside normal working hours. Such
+activities include logging in to systems, connecting to VPNs, accessing files and records, and adding users to security-enabled
+groups.
+Every Helix event includes an event_epoch field with the following time elements. You can use these elements in TQL queries to
+filter events based on time or date.
+• day • second
+• epochtime_field • timezone
+• hour • weekday
+• minute • year
+• month
+The event_epoch field is populated by the following event timestamps, in descending order: eventtime, eventtimeutc,
+detectedtime, detectedtimeutc. The timestamps are displayed in the event details in the Helix Web UI.
+Note
+If an event has none of these timestamps, the event_epoch field is populated by the meta_ts timestamp, which records when
+Helix received the event.
+The epochtime_field time element shows which timestamp populated the event_epoch field. To view all time element values,
+hover over or click event_epoch in the event details.
+Examples
+metaclass:windows eventid=4732 event_epoch.hour>2 event_epoch.hour<10
+Shows when a member is added to a Windows security-enabled group inside the specified 7-hour window (3:00–9:59 UTC).
+class=trellix_audit eventtype=search event_epoch.weekday=["Saturday","Sunday"] | groupby username
+Shows when and by whom Helix searches are run on weekends.
+class=appliance_health status=crit event_epoch.hour>16 | groupby [devicename,deviceid]
+Shows when critical health events occur on appliances during the specified period (17:00–23:59 UTC).
+18 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Set notation
+TQL syntax supports lists of comma-separated values by placing the list between square brackets “[]”. For example:
+srcip:["192.68.1.1","192.68.1.2"]
+Multiple fields can be searched simultaneously by separating field values by a comma and enclosing them in square brackets on
+the left-hand side of your query. For example:
+[srcipv4,dstipv4]:"192.168.1.1"
+Result: returns either srcipv4 or dstipv4 that are 192.168.1.1.
+[srcipv4,dstipv4]:["192.168.1.1","192.168.1.2"]
+Result: returns results with srcipv4 that include 192.168.1.1 or 196.168.1.2 or returns results with dstipv4 that include
+196.168.1.1 or 196.168.1.2.
+Lists can also switch between conjunction and disjunction by using the and/or prefix operators. For example:
+&[srcipv4,dstipv4]:"192.168.1.1"
+Result: returns if both srcipv4 and dstipv4 are 192.168.1.1
+&[rawmsg,domain]!:["google","facebook"]
+Result: returns if both rawmsg and domain have neither google nor facebook
+&[rawmsg,domain]:&["google","cloud"]
+Result: returns if both rawmsg and domain have both Google and cloud
+List syntax contained inside of queries also allows for heterogeneous operations. For example:
+rawmsg:[/192.168/,tcp,ERROR*]
+Result: query would expand to a regular expression against rawmsg, a search for the term tcp in rawmsg, or a prefix query for
+ERROR* in rawmsg.
+Boolean operators
+Boolean operators include AND, OR, and NOT.
+By default, a space between query terms is considered an implicit “and”, and the search is inclusive of all terms specified.
+The order of precedence for AND, OR, and NOT is:
+11.. NOT, which binds to what immediately follows it
+22.. AND (explicit)
+Helix TQL Reference Guide Release 2023.1 19
+2| Anatomy of a TQL query
+33.. AND (implicit, or no AND is entered, but a space exists between two terms)
+44.. OR
+The valid symbols for AND are:
+• AND
+• and
+• &&
+• (single empty space)
+The valid symbols for OR are:
+• OR
+• or
+• || (double bars)
+For example:
+http and tcp or ftp:(http and tcp) or ftp
+http tcp or ftp:http and (tcp or ftp)
+The operator NOT binds to what is immediately after it. For example:
+not ftp
+The valid symbols for NOT are:
+Note
+Only ! can be used as a prefix for the : and = comparison operators.
+• NOT
+• Not
+• ! (exclamation point with no space before next search term)
+For example:
+rawmsg!:&[/192.168/,tcp,ERROR*]
+Result: will return only those results that do not include the regular expression /192.168/, the term tcp, or the prefix ERROR.
+&[srcipv4,dstipv4]!:&["192.168.100/24","192.168.101/24"]
+Result: will return only those results for srcipv4 and dstipv4 that do not lie within either specified CIDR range.
+Comparison operators
+20 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+To find data in a specific field, use the equal operator (=). The equal operator is used for exact matching entire field values.
+For example:
+rawmsg="test"
+Result: would return all events where the entire rawmsg contents are exactly 'test'
+To find data that is the result of an analysis operation, such as an analyzed field value or results of an executed prefix operation,
+use the colon operator (:).
+For example:
+rawmsg:"test"
+Result: performs a search for 'test' in the rawmsg contents.
+In addition to equals, the other supported operator values are:
+• >
+• <
+• =<
+• >=
+Spaces are permitted around the operators for the purpose of clarity.
+Operator values are the tightest binding.
+For example:
+rcvdpackets > 20
+!rcvdpackets <= 20
+Range notation
+Non-inclusive ranges can be specified by enclosing the start and end values of the range in angle brackets ( < > ), separated by
+commas. This functions as a shorthand for two separate filters using the greater than ( > ) and less than ( < ) operators joined by
+an and Boolean operator. For example, the following query:
+srcport > 8999 and srcport < 9301
+can be rewritten as:
+srcport:<8999,9301>
+using range notation. When using range notation, you must use the match ( : ) operator.
+Helix TQL Reference Guide Release 2023.1 21
+2| Anatomy of a TQL query
+Functions
+Functions are used to provide special filters that often go beyond simple Boolean comparisons. Functions are indicated by a
+name and a number of parameters enclosed in parentheses. The nature of the parameters depends on the function in question.
+This section describes the following functions:
+• Has
+• Missing
+• Length
+• Equal
+• Cryptographic hash functions
+Has
+The has function provides a filter for events that contain data in one or more fields.
+The parameters to the has function are field names. Any number of field names can be specified. For example:
+has(dstcity)
+Result: would return only results that included a populated dstcity field.
+has(dstcity,srccity)
+Result: would return only results that included a populated dstcity field and a populated srccity field.
+Note
+The legacy has:field and has= field syntax is deprecated as of TQL 2.0.
+Missing
+The missing function provides a filter for events that do not contain any data in one or more fields.
+The parameters to the missing function are field names. Any number of field names can be specified. For example:
+missing(dstcity)
+Result: would return only results that do not include a populated dstcity field.
+missing(dstcity,srccity)
+Result: would return only results that did not include a populated dstcity field as well as a populated srccity field.
+22 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Note
+The only syntax that works for rules is missing:field or missing=field. There are no limitations for search.
+Note
+The legacy missing:field and missing=field syntax is deprecated as of TQL 2.0.
+Length
+The length function will calculate the length of a field. Use a comparison operator to filter.
+The parameter to the length function is a field name. For example:
+length(uri) > 20
+Result: would return only results that included a uri field with a string length greater than 20.
+Any field used in the length function will be treated as a string field. The right-hand side of a comparison must be a number.
+Note
+This function is only supported in rules. It will not work in search.
+Equal
+The equal function provides a filter for events that have two fields with the same value.
+The parameters to the equal function are field names. Only two field names may be specified. For example:
+equal(rule,program)
+Result: would return only results that included a rule and a program field that contained the same value.
+Note
+This function is only supported in rules. It will not work in search.
+Cryptographic hash
+The md5, sha1, sha256, sha384, and sha512 functions all behave the same way. The only way they differ is in the actual
+cryptographic hash function used. These functions will calculate the message digest of a field value for use in a filter using
+any of the comparison operators.
+The parameter to these functions is a field name.
+Helix TQL Reference Guide Release 2023.1 23
+2| Anatomy of a TQL query
+For example:
+md5(class) = "098f6bcd4621d373cade4e832627b4f6"
+Result: would return only results that included a class where the MD5 hex digest of the value was exactly equal to
+098f6bcd4621d373cade4e832627b4f6.
+Note
+These functions are supported in both search and rules.
+Wildcards
+TQL allows queries to include wildcards that allow you to match against trailing and leading query strings using the wildcard
+operator ( * ).
+For example, the following query uses a wildcard at the end of the query string and returns all results that include URIs that start
+with /google.com:
+uri:/google.com*
+The following query returns all results that include URIs that end with index.php:
+uri:*index.php
+Note
+Wildcards specified before the query string are subject to the same restrictions as regular expressions.
+Parenthetical expressions
+In TQL, parentheses can be used to group terms for precedence. Parentheses are also used to designate subsearches.
+For example:
+tcp and (http or ftp)
+not (http and tcp or not ftp)
+Subsearch and variable expansion
+Subsearch allows you to specify a query to run and then use the results from that query in another query. Subsearch can be
+run by itself or with variable expansion. Variable expansion allows you to specify a list of pre-populated values and then use the
+results from that query in another query. Variable expansion can also be run independently of subsearch.
+24 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Note
+Helix searches require computed short names for variables such as lists. Use the computed short name of a list when
+referencing it (for example, from rules).
+• Subsearch
+• Variable expansion
+• Subsearch with variable expansion
+Subsearch
+Note
+Subsearch is only supported in search. It will not work in rules.
+Subsearch is supported using a parenthetical expression in TQL. For example:
+srcip:(rawmsg:"Trojan") and hostname:"important_machine"
+In this example query, the search engine will first locate “Trojan” in all raw messages and return all the source IPs of those events.
+It will then search for events with one of those source IPs and the hostname “important_machine” and return those events.
+In this example, if the subsearch (rawmsg:Trojan) found two unique srcip addresses (172.15.1.10 and 175.15.1.20), then the full
+searches performed would be:
+srcip:"172.15.1.10" and hostname:"important_machine" OR
+srcip:"175.15.1.20" and hostname:"important_machine"
+You can also compare different variables to each other with the “in” operator to specify the field in the subsearch to be used in
+the comparison. For example:
+IOC dsthost:(srchost in fireeye eventlog:/.*back.*/)
+For this query, search first resolves the subsearch expression and returns the unique srchost, which it then uses to search the
+dsthost as search terms in the main query. This can be useful when the direction of the event is different (as with some of the
+events from other Trellix products) or when trying to look for callback activity from the original infection source.
+Subsearch expressions will also respect the difference between the equal (=) and match (:) operators. For example:
+uri:(domain in rawmsg:"Trojan")
+In this example query, the unique domains returned by resolving the subsearch expression will be used in an analyzed search on
+the uri field due to the match (:) operator.
+Variable expansion
+You can also use variable expansion outside of subsearches. The syntax is:
+Helix TQL Reference Guide Release 2023.1 25
+2| Anatomy of a TQL query
+field_name:$keyword
+For example:
+dsthost:$exec_pc
+In this example, you would be executing the following search:
+dsthost:"execcto" OR dsthost:"execcfo"
+Which is the same as:
+dsthost:["execcto","execcfo"]
+Subsearch with variable expansion
+You can also use subsearch in combination with variable expansion.
+For example:
+IOC (dsthost:$exec_pc)
+For this query, search first resolves the subsearch expression by doing a search for all the dsthosts that match the list $exec_pc
+and returns the result to add them as search terms in the main query. If the exec_pc list contains the hostnames execcto and
+execcfo, the following search is executed by the main query:
+IOC dsthost:"execcto" OR IOC dsthost:"execcfo"
+Directives
+Directives are modifiers that instruct the search engine how to query. Directives are separated from the rest of your query by
+enclosing them within curly braces ( { } ) and must come after the filter portion of the query and before the transforms. Each
+directive is a key/value pair specified by either the colon ( : ) or ( = ) operator, which are interchangeable. Sets are acceptable as
+values. You can include multiple directives by separating them by commas. The directives include:
+• Limit. Indicates the number of documents to search. You can use { limit:0 } to search all documents, but this should
+be used with caution as it can be hazardous when used with broad queries.
+• Page_size. Determines the number of results to return.
+Note
+The page_size directive is not compatible with archive search and might produce inaccurate results if used. Trellix
+recommends that you do not use this directive when performing an archive search.
+• Offset. Indicates how far into a result set to go before returning results.
+• Start. Represents the earliest timestamp to return. Can be placed anywhere inside of a query.
+26 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+• End. Represents the latest timestamp to return. Can be placed anywhere inside of a query.
+Transforms
+Transforms are an important component of TQL and allow you to modify the way that your query results are returned and
+displayed. Transforms are separated from the rest of your query by the pipe symbol ( | ). Queries in Helix can include multiple
+transforms or no transforms.
+Note
+Transforms can be used without filters.
+This section describes the following transforms:
+• Groupby
+• Histogram
+• Sort
+• Table
+Unless otherwise specified, all transforms support named arguments using a key/value pair syntax. For example, the following
+groupby transform:
+rawmsg:* | groupby srcipv4 10 1000
+could also be written:
+rawmsg:* | groupby field = srcipv4 limit = 10 threshold:1000
+These two syntaxes are equivalent in functionality and support. Using one or the other comes down to personal preference.
+When using the key/value pair syntax, the order of the arguments does not matter, the colon ( : ) and equal ( = ) operators are
+interchangeable, and spaces around them, or lack thereof, do not matter.
+Note
+Transforms are supported in search only. They will not work in rules.
+Groupby
+The groupby transform returns the unique values for a specified field and groups them together based on their frequency. You
+can use this transform to determine which specific field values are most or least active in your environment and to see how
+those values relate to other values for the same field.
+Search results are displayed in a table showing the total number of values for each field. A maximum of 500 rows is displayed. To
+view non-grouped results, click Show Search Results.
+Helix TQL Reference Guide Release 2023.1 27
+2| Anatomy of a TQL query
+Click to open the sidebar where you can filter results and view the groupby pie chart.
+Note
+If there are more than 500 results the pie chart does not render. Refine your query and run the search again.
+Groupby Syntax
+mql query [directives] | groupby [<order>] <field> [<limit>] [<threshold>]
+<order> Controls the order of the results. Must be >
+(descending order) or < (ascending order). When
+using a key/value syntax, the strings “desc” or “asc”
+are also acceptable. Descending order will show
+the most frequent occurrences; ascending order will
+show the least.
+<field> A field used in your environment.
+<field>
+can be any string composed of letters, numbers, and
+special characters that designate a field used in your
+environment. You may also specify a set of fields by
+enclosing them in brackets ( [] ). When doing so, the
+groupby
+28 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+will be performed on tuples created from the values
+indicated by the fields.
+<limit> Integer. Designates the maximum number of results
+to show. This argument is optional.
+<threshold> Integer. Designates a minimum count threshold. This
+argument is optional.
+Note
+TQL was previously called MQL. You still use and see mql in TQL queries.
+Examples
+Query Result
+rawmsg:* | groupby srcipv4 10 1000 The top ten
+srcipv4
+values that have at least 1000 occurrences. See
+above screenshot.
+tcp | groupby dstport 10 1000 The 10 most frequent ports that also have counts
+greater than 1000.
+tcp | groupby < srcipv4 100 The 100 least frequent
+srcipv4
+values.
+tcp | groupby > srcipv4 10 The 10 most frequent
+srcipv4
+values.
+tcp | groupby > [srcipv4,dstipv4] 10 The 10 most frequent unique
+srcipv4_dstipv4
+tuples.
+Histogram
+The histogram transform displays a bar chart or pie chart of results.
+Helix TQL Reference Guide Release 2023.1 29
+2| Anatomy of a TQL query
+Note
+A query cannot contain both groupby and histogram transforms.
+Note
+The histogram transform works only for custom dashboards.
+Histogram syntax
+mql query | histogram <field> <period>
+<field> The field determines what data is plotted.
+<period> The time period for the bar chart to cover. Valid
+values are
+day
+,
+minute
+,
+hour
+, and
+second
+.
+Note
+TQL was previously called MQL. You still use and see mql in TQL queries.
+Examples
+Query Result
+has:class | histogram meta_ts day Display results for
+meta_ts
+30 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Query Result
+for the previous 24 hours in a histogram.
+has:class | histogram meta_ts minute Display results for
+meta_ts
+for the past minute in a histogram.
+has:class | histogram meta_ts hour Display results for
+meta_ts
+for the past hour in a histogram.
+has:class | histogram meta_ts second Display results for
+meta_ts
+for the past second in a histogram.
+Sort
+The sort tranform is used to determine how to arrange events returned in a TQL search.
+Sort syntax
+mql query | sort [<order>] <field>
+Note
+TQL was previously called MQL. You still use and see mql in TQL queries.
+<order> Controls the order of the results. Must be >
+(descending order) or < (ascending order). When
+using key/value syntax, the strings “desc” or “asc”
+are also acceptable. This argument is optional, and,
+when omitted, will default to descending order.
+<field> The field that determines how search results are
+sorted. You may specify a set of fields here to sort
+on multiple fields.
+Examples
+Helix TQL Reference Guide Release 2023.1 31
+2| Anatomy of a TQL query
+Query Result
+tcp | sort < srcport Search and return results for
+tcp
+and sort them into ascending order by
+srcport
+.
+tcp | sort > srcport Search and return results for
+tcp
+and sort them into descending order by
+srcport
+.
+Sorting by multiple fields
+Query Result
+tcp | sort < [srcport,dstport] Search and return results for
+tcp
+and sort into ascending order first by
+srcport
+and then by
+dstport
+.
+Note
+The sort transform can also be passed as a separate transform in a query, as shown in the following example.
+Query Result
+tcp | sort < srcport | sort > dstport First, search and return results for
+tcp
+and sort results in ascending order by
+srcport
+. Then, for all identical
+srcport
+values, sort by
+dstport
+in descending order.
+32 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Table
+The table transform allows you to return specific fields from queried events and then display those query results as a table. The
+event data displayed in the table are based on the fields specified as part of the table transform. This transform works in tandem
+with the other TQL transforms, sort and groupby.
+Table syntax
+mql query | table [<field>,<field2>,<fieldn>]
+Note
+TQL was previously called MQL. You still use and see mql in TQL queries.
+<field> The first column of the table.
+<field2> The second column of the table.
+<fieldn> The nth column of the table.
+Table functionality
+• The table transform allows for an unlimited number of table columns. If your query creates more columns than can be
+displayed, you can see the other columns by scrolling to the right in the main Helix window.
+• You can modify how the table is sorted by clicking on any of the column headers or by modifying your TQL query.
+• As with other TQL queries, you can download all of your results as a CSV file.
+Helix TQL Reference Guide Release 2023.1 33
+2| Anatomy of a TQL query
+Note
+Unlike other TQL queries, you will not be able to select individual events or be able to add events to Incidents.
+Tables and other transforms
+You can add the sort or groupby transforms by using this query form:
+mql query | table [<field1>,<field2>,<fieldn>] | sort [< or >] [<field>] | groupby [<field>]
+Note
+TQL was previously called MQL. You still use and see mql in TQL queries.
+Example
+class:bro_http method="GET" | table [metats,srcipv4,srcport,dstipv4, dstport,domain] | sort < domain
+This query creates a table with HTTP GET requests from the Bro HTTP class, with columns for the metatas, srcipv4, srcport,
+dstipv4, dstport, and domain fields, while sorting the entire table in descending order from the domain column.
+Taxonomy
+Because log data within an environment varies widely, Helix imposes a high-level standardized view of events and normalizes the
+data. This allows you to craft queries and to interact with the data in a more predictable, standardized way, such as searching
+and creating rules.
+The Helix taxonomy serves as the “dictionary” for the Helix parsers that normalize the event data. Helix parses event data so that
+it is more easily compared and available to use as a pivot in searches.
+This section covers the following topics:
+• Classes
+• Common usage
+• Metaclasses
+• Fields
+• Aliases
+Classes
+Classes in the Helix taxonomy represent types of events or log sources. For example:
+• A synthetic event created by an intel hit appears as class class:intel_hit.
+• An advisory generated by Trellix analytics appears as class:analytics.
+34 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+A class is simply an identifier and can be any string. Helix uses a naming scheme of class=<vendor>_<product>. For example,
+class=palo_alto_http.
+Note
+Events that are not parsed or have not yet been seen in a Helix environment appear as class:unknown.
+Metaclasses
+A metaclass is simply a generic class name that refers to events from one or more actual classes in Helix. Metaclasses allow you
+to refer to specific types of events without knowing in which class they actually exist.
+For example, if you have both Bluecoat HTTP proxies and a Palo Alto Networks firewall with HTTP inspection enabled, your event
+data may have classes called bluecoat and palo_alto_http. Both contain similar data (that is, logs of users browsing websites on
+the Internet). You can search either or both of these classes directly, but then you must remember to use a query such as:
+class=bluecoat OR class=palo_alto_http
+Instead you can use the metaclass called http_proxy, which can reference events from both classes. In other words, the
+following search:
+metaclass=http_proxy
+is the equivalent of the following search:
+class=bluecoat OR class=palo_alto_http
+Metaclass definitions
+Helix metaclasses are defined in the following table.
+Metaclass Definition
+antivirus Events generated by antivirus or similar host-
+based mechanisms (for example, ClamAV, Symantec,
+Sophos, McAfee).
+app_transaction Any application-based transaction activity, such as
+an application, database, or similar API transaction
+record.
+Helix TQL Reference Guide Release 2023.1 35
+2| Anatomy of a TQL query
+Metaclass Definition
+auth Events pertaining to authentication or authorization
+(for example, Single Sign-On (SSO), Active Directory,
+LDAP, RADIUS, 2FA).
+cloud Events originating from any cloud-hosted service or
+product.
+connection Connection-based events providing visibility into
+network protocols (for example, netflow, sflow, jflow ,
+session, connection).
+dhcp Events pertaining to Dynamic Host Configura tion
+Protocol (DHCP) and IP address allocation.
+dlp Data loss prevention events related to the
+protection, confidentiality, and integrity of data
+handling within network, endpoint, and cloud
+environments.
+dns Events pertaining to any method or transaction used
+to interact with DNS records.
+email Events pertaining to email message transfer (for
+example, SMTP).
+file_xfer File transfer events in any protocol (for example, FTP,
+HTTP, SMB, BitTorrent).
+firewall Connection accept/deny events generated by
+firewalls or similar devices that enforce ACLs on
+network traffic (for example, VLAN, ACLs).
+health Specialized events providing health metrics for a
+sensor or server.
+http_proxy Outbound Web browsing events processed by an
+HTTP proxy. Includes events processed by other
+36 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Metaclass Definition
+sources that handle outgoing HTTP traffic. Used in
+intel matching and Trellix rules and analytics
+http_server Inbound Web requests processed by a hosted
+Web server. Includes events generated by other
+sources that handle incoming HTTP traffic (for
+example, apache, nginx, firewalls, reverse proxies,
+load balancers). Used in intel matching and Trellix
+rules and analytics.
+ids Intrusion detection/prevention system events,
+including network alerts (for example, Snort,
+Suricata, Bro) or host-based alerts (for example,
+McAfee HIPS, OSSEC).
+nat Network Address Translation (NAT) or Port Address
+Translation (PAT) events.
+posix Events originating from POSIX, Unix, and Linux based
+services.
+privilege Events that indicate escalated user privileges (for
+example, Cisco
+enable
+,
+sudo
+,
+runas
+, Windows impersonation).
+vpn Site-to-site VPN tunnel events or end-user client-
+access VPN events.
+windows Windows event logs (all types).
+Metaclass tokenization
+Helix TQL Reference Guide Release 2023.1 37
+2| Anatomy of a TQL query
+The TQL search engine uses an algorithm to figure out what terms to index given the type of input. This algorithm uses a
+tokenizer to split a message up into words (or tokens) to use for its index. For example, consider a basic log message quick brown
+fox. The simplest tokenizer is to split by spaces, so this example would have three tokens: quick, brown, and fox.
+A log message can be assigned to more than one metaclass. Each metaclass name is added to the metaclass field separated by a
+comma. For example, a metaclass value could be "ids,firewall".
+The tokenizer for the metaclass field is set to also look at commas. Therefore, when the metaclass field is indexed, we would get
+the tokens: ids, firewall
+TQL is able to query tokenized metaclasses. So the query metaclass:ids will return results that have ids, firewall as the
+metaclass field.
+Commonly used taxonomy
+This section covers categories of events commonly used in the Helix taxonomy. It provides a brief description of each category,
+metaclasses that reference the events (if any), fields in the event data, and how Helix uses the event data.
+Note
+Many of the fields included in this section are commonly used in detection, but it should not be considered a full list of such
+fields.
+General event information
+General events that are commonly seen. These taxonomy fields are used in Trellix rules and analytics.
+Taxonomy Type Description
+eventid string Event identifier
+eventtime date-string Date and time when the actual
+event took place
+eventtype string Event type
+msg string Free-form message
+Alert and malware information
+38 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Events pertaining to alerts from Trellix or other security products.
+These events may belong to the antivirus or ids metaclass.
+Fields such as action, category, severity, and virus are used in Trellix rules and analytics.
+Taxonomy Type Description
+action string Action taken for an event, such as
+allow, drop, or quarantine
+category string Category name
+malwarename string Malware name
+malwaretype string Malware classification
+severity string Severity level
+virus string Virus name
+Network connection information
+Events pertaining to network connections.
+Parsing should prioritize primary source and destination information, including IP addresses that can be used in intel and
+analytics. These events belong to the connection, firewall, or http_proxy metaclass.
+Taxonomy Type Description
+dsthost string Hostname of the destination
+machine
+dstipv4 IPv4 Destination IPv4 address.
+Provides additional geolocation
+information about events (such
+as
+dstisp
+,
+dstcountry
+Helix TQL Reference Guide Release 2023.1 39
+2| Anatomy of a TQL query
+Taxonomy Type Description
+,
+dstlatitude
+,
+dstlongitude
+).
+dstipv6 IPv6 Destination IPv6 address.
+Provides additional geolocation
+information about events (such
+as
+dstisp
+,
+dstcountry
+,
+dstlatitude
+,
+dstlongitude
+).
+dstport integer Destination port number
+srchost string Hostname of the source machine
+srcipv4 IPv4 Source IPv4 address. Used in
+all detection rules for global
+exclusions. Provides additional
+geolocation information about
+events (such as
+srcisp
+,
+srccountry
+,
+srclatitude
+,
+srclongitude
+).
+srcipv6 IPv6 Source IPv6 address. Used in
+all detection rules for global
+exclusions. Provides additional
+geolocation information about
+events (such as
+srcisp
+40 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Taxonomy Type Description
+,
+srccountry
+,
+srclatitude
+,
+srclongitude
+).
+srcport integer Source port number
+HTTP request information
+Events pertaining to HTTP proxies, servers, or other L7 network devices.
+These events belong to the http_proxy or http_server metaclass.
+The clientvars, httpmethod, referrer, statuscode, uri, and useragent fields are used in Trellix rules and analytics. The domain
+field is used in intel matching.
+Taxonomy Type Description
+clientvars string HTTP or other client variables
+domain string Domain name. Typically seen
+in HTTP, DNS, or authentication
+requests. May be extracted from
+url
+.
+httpmethod string HTTP method (such as
+POST
+,
+GET
+,
+PUT
+,
+PATCH
+,
+DELETE
+)
+Helix TQL Reference Guide Release 2023.1 41
+2| Anatomy of a TQL query
+Taxonomy Type Description
+referrer string HTTP or other referrer
+statuscode integer HTTP code (such as
+200
+,
+404
+,
+500
+) or other status code
+uri string Malicious resource URI. May be
+extracted from
+url
+.
+useragent string HTTP client user agent
+DNS request information
+Events pertaining to requests from DNS servers or L7 network devices.
+These events belong to the dns metaclass.
+The domain field is used in intel matching.
+Taxonomy Type Description
+domain string Domain name. Typically seen in
+an
+HTTP
+,
+DNS
+, or authentication request.
+protocol string Protocol used in a session (such
+as
+http
+,
+ftp
+,
+42 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Taxonomy Type Description
+smtp
+)
+querytype integer DNS record/query type (such as
+1
+,
+2
+,
+6
+,
+12
+,
+28
+)
+querytypename string DNS/record query type (such as
+A
+,
+NS
+,
+SOA
+,
+PTR
+,
+AAAA
+)
+File transfer information
+Events pertaining to file transfers through HTTP, FTP, and SMP protocols.
+These events belong to the file-xfer metaclass.
+The filename field is used in Trellix rules and analytics. The md5,sha1, and sha256 fields are used in intel matching.
+Taxonomy Type Description
+filename string File name or path
+filepath string File path
+Helix TQL Reference Guide Release 2023.1 43
+2| Anatomy of a TQL query
+Taxonomy Type Description
+hash string Any type of message digest hash
+value
+md5 string MD5 hash value
+sha1 string SHA1 hash value
+sha256 string SHA256 hash value
+size string File size
+Authentication information
+Events pertaining to authentication or authorization, such as Single Sign-On (SSO), Active Directory, LDAP, RADIUS, and 2FA.
+These events belong to the auth or privilege metaclass.
+Taxonomy Type Description
+authmethod string Authentication method
+Email information
+Events pertaining to email or SMTP, typically from email gateways or security solutions.
+These events belong to the email metaclass.
+Taxonomy Type Description
+from string Sender's email address
+mailfrom string Sender address from email
+header
+44 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Taxonomy Type Description
+rcptto string Recipient address from email
+header
+size integer File size
+srcipv4 IPv4 Source IPv4 address
+srcipv6 IPv6 Source IPv6 address
+subject string Subject field in an email
+to string Recipient's email address
+Windows
+Events pertaining to Microsoft Windows. Event logs can vary greatly based on OS version, event ID, log gathering method, and
+other environmental factors.
+These events belong to the windows metaclass.
+The args, eventid, msg, pprocess, process, and source fields are used in Trellix detection rules.
+Taxonomy Type Description
+args string Arguments passed to a function,
+command, or operation
+callingdomain string Authentication domain of a
+remote calling identity, typically
+observed in windows event logs
+as calling domain
+callinglogonid string Caller logon identifier
+callinguid string Caller user identifier
+Helix TQL Reference Guide Release 2023.1 45
+2| Anatomy of a TQL query
+Taxonomy Type Description
+callingusername string Arguments passed to a function,
+command, or operation
+eventid string Event identifier
+logonguid string Logon globally unique i dentifier
+(GUID)
+logonid string Logon user identifier (UID),
+unique between reboots on the
+same computer
+msg string Free-form message
+pid integer Process identifier
+ppid integer Parent process identifier
+pprocess string Parent process name
+process string Process name
+source string Origin or log source
+targetdomain string Target system or user domain
+targetlogonid string Typically observed in host IDS/
+IPS, AV, and others when
+referencing a targeted system or
+user
+targetusername string Target system or user name
+Fields
+46 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+Note
+Except for the rawmsg, program, and meta_omh fields, values for string fields are treated as lowercase.
+Field names in TQL queries consist of a string of letters and numbers. Each distinct field is the string up to a white space or
+a string within quotation marks. Field names are determined by the taxonomy. They are not case sensitive and can be either
+lowercase or uppercase.
+Fields containing strings that have not been normalized (that is, parsed using a Helix parser against the taxonomy) will match
+only on the entire contents of the field. All parsed fields (that is, fields designated by a Helix parser against the taxonomy) will
+match on partial values.
+The following fields are common in Helix events, (whether part of a class or metaclass):
+• _metadata_.customer_id
+• rawmsghostname
+• rawmsg
+• class
+• program
+If the field does not apply to that event, that field is still present but has no value.
+Searching within nested objects
+You can search for fields within nested objects using dot notation. For example, to find fields that are nested within the
+detect_rulematches field, use one of the following syntaxes:
+detect_rulematches.severity:'high'
+or
+detect_rulematches.rulename:'phasebot backdoor [uri]'
+Aliases
+TQL recognizes aliases for field names. The alias searches for all fields that are designated as corresponding to that alias. Using
+an alias allows you to search for multiple fields at the same time without knowing the exact field name of each field. An alias will
+match on any field that it represents.
+Caution
+Trellix recommends using aliases sparingly. While this type of query may be useful, it is a time-intensive query to run because
+the search must look for every field that the alias represents.
+Helix TQL Reference Guide Release 2023.1 47
+2| Anatomy of a TQL query
+Note
+If you want to search for specific multiple field names, use a list instead. For more information, see Subsearch and variable
+expansion.
+Aliases include:
+• ~ipv4
+• ~srcipv4
+• ~dstipv4
+• ~ipv6
+• ~srcipv6
+• ~dstipv6
+• ~host
+• ~id
+• ~mac
+• ~port
+• ~interface
+• ~hash
+• ~reg
+For example:
+~hash=[hash or MD5 or SHA1 or SHA256 or SHA512]
+~ipv4
+The alias ~ipv4 references fields that contain IP addresses such as:
+srcipv4 IPv4 address of the source
+dstipv4 IPv4 address of the destination
+transdstip Translated IPv4 address of the destination
+rawmsghostipv4 IPv4 address of the host sending the raw message
+cidr Classless Inter-Domain Routing (CIDR) notation
+transsrcip Translated IPv4 address of the source
+48 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+defgw Default gateway typically referenced in network
+events
+ipmask IP network mask
+intnatip Internal NAT IP address used in NAT logs
+extnatip External NAT IP address used in NAT logs
+xfwdforip X-forwarded-for header value, command+ space
+delimited if more than one
+callingsrcip Source IP of a remote calling identity, typically
+observed in Windows event logs as calling address
+targetip Typically observed in host IDS/IPS, AV, and other logs
+when referencing a targeted system or user
+For example:
+~ipv4=215.18.25.33
+~ipv4:215.18.25.0/24
+~dstipv4=215.18.25.33
+~srcipv4
+Like ~ipv4, the alias ~srcipv4 references keywords that have directional orientation as being a source IP value of some kind such
+as:
+rawmsghostipv4 IPv4 address of the host sending the raw message
+srcipv4 IPv4 address of the source
+transsrcip Translated IPv4 address of the source
+callingsrcip Source IP of a remote calling identity
+Helix TQL Reference Guide Release 2023.1 49
+2| Anatomy of a TQL query
+For example:
+~srcipv4:25.18.25.33
+~dstipv4
+Like ~ipv4, the alias ~dstipv4 references keywords that have directional orientation as being a source IP value of some kind such
+as:
+targetip Typically observed in host IDS/IPS, AV, and other logs
+when referencing a targeted system or user
+dstipv4 IPv4 address of the destination
+transdstip Translated IPv4 address of the destination
+For example:
+~dstip4:25.18.25.33
+~ipv6
+The alias ~ipv6 references fields that contain IP addresses such as:
+srcipv6 IPv6 address of the source
+dstipv6 IPv6 address of the destination
+rawmsghostipv6 IPv6 address of the host sending the raw message
+~srcipv6
+Like ~ipv6, the alias ~srcipv6 references keywords that have directional orientation as being a source IP value of some kind such
+as:
+rawmsghostipv6 IPv6 address of the host sending the raw message
+srcipv6 IPv6 address of the source
+50 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+For example:
+~srcipv6:25.18.25.33
+~dstipv6
+Like ~ipv6, the alias ~dstipv6 references keywords that have directional orientation as being a source IP value of some kind.
+For example:
+dstipv6—IPv6 address of the destination
+~host
+The ~host alias references all keywords for a hostname. You can search for the complete hostname or a portion of a fully
+qualified hostname. ~host references such fields as:
+rawmsghostname Hostname, when available, of the host sending the
+raw message. In some cases, this may be a log relay
+or forwarder
+targethost Typically observed in IDS/IPS, AV, and other logs
+when referencing a targeted system or user
+hostname Hostname which is used whenever the source or
+destination is unclear or unknown
+srchost Hostname of the source machine when direction is
+known and/or relevant which typically resolve to
+srcip
+or
+srcipv6
+dsthost Hostname of the destination machine when
+direction is known and/or relevant that typically
+resolves to
+dstip
+or
+desipv6
+server Hostname for when
+srchost
+or
+dsthost
+Helix TQL Reference Guide Release 2023.1 51
+2| Anatomy of a TQL query
+do not apply such as a central management server,
+proxy, or router serving a nondirectional role
+node Hostname for specific references to a node that is
+typically a sensor node
+agent Name of an agent
+sensor Name of a sensor
+workstation Name of workstation that is used only when
+hostname is already used and workstation is
+explicitly declared
+For example:
+~host=corp-12345
+~host:subdomain
+~host=mycompany.com
+~host:copr-12345.subdomain.mycompany.com
+~id
+The ~id alias is a generic term for referencing all keywords that contain some type of ID. ~id references such keywords as:
+classid Class ID for event collection
+eventid Specific event identifier
+protoid Numerical representation of a protocol (6=TCP,
+17=UDP, 47=GRE, and so on)
+connectionid Specific connection identifier
+transactionid Specific transaction identifier
+sessionid Specific session identifier
+52 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+deviceid Specific device identifier
+agentid Specific agent identifier
+accountid Specific account identifier
+uid Used when a given user (such as
+joesample
+) also has a unique user ID or GUID (such as 9473)
+gid Specific group identifier
+policyid Specific policy identifier
+portid Specific port ID or terminal port ID
+pid Specific process ID, typically used for application
+PIDs
+ppid Specific parent process ID, typically used for
+application PPIDs
+ruleid Rule or Signature ID containing a unique ID for a
+given rule or signature
+referenceid Specific reference ID relating two or more things
+together
+requestid Specific request ID, specifying the identifier of a
+given request
+callid Specific call identifier
+handleid Specific handle identifier, referring to process handle
+IDs
+operationid Specific operation identifier
+Helix TQL Reference Guide Release 2023.1 53
+2| Anatomy of a TQL query
+callinguid User ID of a remote calling identity, typically
+observed in Windows event logs as calling ID
+cveid Common Vulnerabilities and Exposures i dentifier,
+can be referenced by either reference number or
+year
+processid Specific process identifier
+creatorprocessid Specific creator process identifier
+threadid Specific thread identifier
+stationid Specific station identifier
+fileid Specific file identifier
+parentfileid Specific parent file identifier. In Bro logs, this is the
+identifier associated with a container file from which
+the child (
+fileid
+) was extracted as part of the file analysis.
+sentfileid Sent file identifier, found in Bro http logs as the
+orig_fuids
+value, indicates the file identifier of a file pertaining
+to an originator.
+rcvdfileid Received file identifier, found in Bro http logs as the
+resp_fuids
+value, indicates the file identifier of a file pertaining
+to a receiver.
+lastalertid In Bro ssl logs, the
+last_alert
+field is the last alert that was seen during the
+connection.
+For example:
+54 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+~id:CrGQK52UXAI2JQL1r9
+~mac
+The ~mac alias allows you to search for a MAC address regardless of the hex value delimiter format and includes such keywords
+as:
+~mac General purpose field for MAC address
+~macoui Organizationally unique identifier of a MAC address
+~srcmac MAC address of the source when direction is known
+~dstmac MAC address of the destination when direction is
+known
+You can search by the OUI portion of the MAC address also.
+For example:
+~mac=01:23:45:67:89:ab
+~mac:01-23-45
+~port
+The ~port alias references keywords that contain a network port value such as:
+~srcport Source port number
+~dstport Destination port number
+~transsrcport Translated source port number
+~transdstport Translated destination port number
+For example:
+~port=80
+Helix TQL Reference Guide Release 2023.1 55
+2| Anatomy of a TQL query
+~interface
+The ~interface alias references keywords that contain a network interface value such as:
+interface Logical or physical network interface used for
+communications (eth0, eth1, etc) when orientation is
+unknown
+localinterface Local interface identifier, typically network or firew all
+events specifying interface orientation
+foreigninterface Foreign interface identifier, typically network or
+firewall events specifying interface orientation
+For example:
+(~interface=eth0 or ~interface=eth1) and ip="22.33.44.55"
+~hash
+The ~hash alias references keywords that contain a cryptographic hash value and can be used in cases in which you do not know
+the specific cryptographic hash algorithm used to generate the hash such as:
+hash General purpose field for storing any type of
+message digest hash value
+MD5 Computed MD5 hash value of an object
+SHA1 Computed SHA1 hash value of an object
+SHA256 Computed SHA256 hash value of an object
+SHA512 Computed SHA512 hash value of an object
+For example:
+~hash="24a938a1fcc5df0a7e78267aac0a41ca"
+56 Helix TQL Reference Guide Release 2023.1
+2| Anatomy of a TQL query
+~reg
+The alias ~reg references keywords that reference registry information, such as:
+regvalue
+regpath
+regkey
+For example:
+~reg:run
+Best practices
+The following best practices can help you use TQL effectively.
+• Use a list and refer to it, instead of using arrays repeatedly.
+• Do not run regular expressions on a large set of search results. Minimize the search results first and then run regular
+expressions on them.
+• Be careful with limit 0. It removes all limitations and causes every event to be returned.
+• Encapsulate all string patterns with single or double quotation marks to help ensure that Helix accurately interprets the
+string. For example:
+connectionid="1377908085497899" "<search string pattern in rawmsg>" srcipv4:["1.1.1.1","2.2.2.2"]
+count>"4"
+eventtime>'2022-04-07T01:10:50:000Z'
+• Using spaces and special characters within a rawmsg string pattern can result in inconsistent search results. To avoid
+this, either encapsulate single words with quotation marks as noted above or use the AND operator between words. For
+example:
+Use "incapsula" AND "impreva" instead of "incapsula impreva".
+Use 'username' 'admin' instead of 'username:admin'.
+• Using : (contains) instead of = (exact match) is recommended for inexperienced users.
+Helix TQL Reference Guide Release 2023.1 57
+3| TQL cheatsheet and use cases
+TQL cheatsheet and use cases
+This section provides example TQL queries, organized into categories.
+Basic TQL queries
+The following are basic TQL queries.
+All available classes
+| groupby [class]
+All available classes and log source
+| groupby [class,rawmsghostname]
+Network Security Evidence Collector event categories
+class=fireeye_nx | groupby eventtype
+Connection-based activity
+metaclass=connection | groupby class
+HTTP-based activity
+metaclass:http_proxy | groupby class
+Classes of events associated with a single connection by ID
+has:connectionid connectionid="<CONNECTION ID>" | groupby [class]
+Large files sent out
+sentipbytes>250000 | groupby count | table [meta_ts, class, duration, srcipv4, srccountrycode, dstipv4,
+dstcountrycode, dstport, sentbytes, rcvdbytes] | sort > sentbytes
+All software identified by bro_software, with no blank entries
+class:bro_software not content=(null)/(null) ((null)) not content=(empty) | table content |groupby content |
+sort < content
+Java only as an example
+class:bro_software application:"java" | table [srcipv4, content]
+File Analysis Framework events
+class:fireeye_faf | groupby application
+Intel hit TQL queries
+58 Helix TQL Reference Guide Release 2023.1
+3| TQL cheatsheet and use cases
+Each intel hit creates a synthetic event with the class of “intel_hit”. To find all events that are intel hits, run the Search TQL
+query class=intel_hit and select specific dates in the Search box.
+To further refine the intel_hits that the search returns:
+• Type. To see the number of hits that are based on commodity and curated intelligence, use the query:
+class=intel_hit | groupby type.
+• Intelscore. To see the number of intel hits with an intelligence score (that is, low, medium, high, or critical) use the query:
+class=intel_hit | groupby intelscore
+• Malware family. To show how many intel hits are from a specific intel malware family, use the query:
+class=intel_hit | groupby <"intelmalwarefamily">
+Example
+The following query searches for all events that are intel_hits and then filters those results to only those events that have
+192.168.* (where * is a regular expression) for the srcipv4 field.
+class=intel_hit srcipv4:"192.168/16"
+Asset-based TQL queries
+Helix analyzes organizational-level assets (or entities) such as users and hosts to identify potential insider threats. This detects
+behavior anomalies by these assets, creates detections, and alerts the system immediately. The assets are attached to event data
+for the incoming Helix alerts.
+Index Search in the Helix Web UI has keys such as assets and asset_type that allow you to build a search query. You can hover
+over or click the assets field in Search Results to view nested fields such as asset_id, asset_name, and asset_uuid and then use
+the values that are returned in subsequent searches.
+Examples
+The following examples queries return events with assets.
+All events with users correlated to physical devices:
+assets.event_fields:username | groupby hostname
+All events with the field "username" grouped by individual user names:
+assets.event_fields:username | groupby username
+All events with the asset alias "win7hxagent":
+assets.asset_alias:"win7hxagent"
+All events with the asset name "user04":
+Helix TQL Reference Guide Release 2023.1 59
+3| TQL cheatsheet and use cases
+assets.asset_name="user04"
+All events with assets grouped by asset ID:
+| groupby assets.asset_id
+All events with the class "fireeye_nx_alert":
+has(assets) AND class=fireeye_nx_alert
+All events with a username field:
+has(assets, username)
+Traffic validation and network visibility check TQL queries
+The following TQL queries can be used for traffic validation and network visibility.
+Full scope of capture query (classes observed)
+| groupby [class]
+Full scope of capture query (user to internet, data center to internet, user to data center)
+| groupby [srcisp,dstisp]
+Network Security (NX) alerts triggered by a local deployment test, grouped by device name and device ID
+Alerts triggered by local deployment tests that are run from the Network Security appliance Web UI or CLI.
+class=fireeye_nx_alert has(domain) has(url) domain:/fedeploycheck/ | groupby [devicename,deviceid]
+All classes but one referencing destination network ports
+All classes (except fireeye_nx L7 network metadata) that reference destination ports 80, 8080, or 443) and grouped by class,
+destination port, and protocol.
+!class:fireeye_nx dstport:[80,8080,443] | groupby [class,dstport,protocol]
+Citrix connections grouped by country of origin
+Note
+This example includes a reference to a list of external Citrix servers.
+class:fireeye_nx dstipv4:$external_citrix_servers connstate:"sf" | groupby srccountry 200
+Traffic capture bi-directional traffic checks (class agnostic)
+List of internal IPs on a subnet
+class:"bro_*" srcipv4:"<SUBNET ADDRESS/CIDR>" srcisp:"private ip address lan"| groupby srcipv4 500
+60 Helix TQL Reference Guide Release 2023.1
+3| TQL cheatsheet and use cases
+List of incoming connections to internal addresses from a non-internal source
+class:"bro_*" dstipv4:"<SUBNET ADDRESS/CIDR>" srcisp!:"private ip address lan" | groupby srcipv4 500
+List of connections from an internal subnet by source and destination ISP
+class:"bro_*" srcipv4:"<SUBNET ADDRESS/CIDR>" | groupby [srcisp,dstisp]
+List of incoming connections to internal addresses from a non-internal source by source and destination ISP
+class:"bro_*" dstipv4:"<SUBNET ADDRESS/CIDR>" srcisp!:"private ip address lan" | groupby [srcisp,dstisp]
+HTTP Traffic check pivot from specific connection ID
+class=bro_http connectionid=<CONNECTION ID> | groupby [dstisp,srcisp]
+Wilderness rule firing check
+has:detect_rulematches | groupby detect_rulenames
+Cloud MVX Submission OS Change Report from Cloud Collector (faf and bespin enablement)
+class:fireeye_faf has:virus
+Number of events in one hour by log type
+Compares the number of events received in one hour from each log source.
+start:"2014-03-14 15:00:00" end:"2014-03-14 16:00:00" | groupby class
+start:"2 hours ago" end:"1 hour ago"| groupby class
+Alert TQL queries
+The following TQL queries can be used for alerts.
+Helix alerts
+class=alerts | table [id, risk, message]
+Helix alert kill chain mapping
+class=intel_hit intelwhitelisted=false intel_context.observable_analysis_conclusion="malicious"
+has:intel_context.observable_threat_actors | groupby
+[intel_context.observable_threat_actors,intel_context.observable_malware_families] | table
+[meta_rts,intelmatchclass,srcipv4,intel_matches,action,intel_context.observable_labels,intel_context.observable_malware_families,intel_context.observable_threat_actors]
+Intel hits associated with known malware families
+class=intel_hit intelwhitelisted=false intel_context.observable_analysis_conclusion="malicious"
+has:intel_context.observable_malware_families | groupby
+[intel_context.observable_threat_actors,intel_context.observable_malware_families] | table
+[meta_rts,intelmatchclass,srcipv4,intel_matches,action,intel_context.observable_labels,intel_context.observable_malware_families,intel_context.observable_threat_actors]
+FireEye Alert JSON for domain IOC
+class:fireeye_* eventlog=malware-object explanation.malware-detected.malware.domain="<DOMAIN VALUE>"
+Helix TQL Reference Guide Release 2023.1 61
+3| TQL cheatsheet and use cases
+FireEye alert JSON for hash IOC
+class:fireeye_* eventlog=malware-object explanation.malware-detected.malware.md5sum="<HASH VALUE>"
+FireEye alerts by class and detection type
+class:fireeye_* has:virus | groupby [class,virus]
+Bro-specific TQL queries
+The following TQL queries are Bro-specific.
+Note
+Zeek (formerly Bro) logs are generated by Cloud Collector, which is being replaced by the Network Security Evidence Collector
+sensor (class fireeye_nx).
+MD5 hash for every file that crosses a monitored network segment
+class=bro_files | groupby md5
+MD5 hash for every file sourced from a network located in China
+class:bro_files srccountry:"china" | groupby md5
+Mimetype for every file
+class:bro_files | groupby mimetype
+All source countries for .exe files
+class:bro_files mimetype:"application/x-dosexec" | groupby srccountry
+All RAR files that were transferred
+class:bro_files mimetype:"application/x-rar"
+All source IP addresses and source countries in logged SSH connections
+class:bro_ssh | groupby [srcipv4,srccountry]
+Compliance – different IE versions within network
+class:bro_http "msie" | groupby useragent
+Compliance – vulnerable versions of Java?
+class:bro_software "java" | groupby content
+Identify inbound RDP activity from any external (nonroutable under RFC1918) address
+dstport:3389 and not srcisp:"private ip address lan"
+Identify RDP activity originating from a specific system to any destination
+62 Helix TQL Reference Guide Release 2023.1
+3| TQL cheatsheet and use cases
+srcipv4:"10.0.0.1" dstport:3389 | groupby dstipv4
+Identify SMB activity originating from a specific system to any destination port in a non-inclusive range
+srcipv4:"10.0.0.1" dstport:(<5354-6000>) | groupby dstipv4
+Identify all DNS connections originating from a specific system
+dstipv4:"10.0.0.1" dstport:53 | groupby srcipv4
+Identify large outbound transmissions of data
+!dstisp:["private ip address lan"] sentbytes>10000000 | groupby [dstipv4,dstdomain,dstisp]
+Bro Conn TQL queries
+The following TQL queries are Bro Conn queries.
+Identify top talkers including internal to internal
+class:bro_conn NOT (srcisp:"private ip address lan" AND dstisp:"private ip address lan") | groupby srcipv4
+Identify pairs of top talkers
+class:bro_conn NOT (srcisp:"private ip address lan" AND dstisp:"private ip address lan") | groupby
+[srcipv4,dstipv4]
+Identify top talkers (outbound only)
+class:bro_conn (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" | groupby srcipv4
+Identify top talkers (inbound only)
+class:bro_conn not srcisp:"YOUR COMPANY ISP NAME" not srcisp:"private ip address lan" (dstisp:"YOUR COMPANY
+ISP NAME" OR dstisp:"private ip address lan") | groupby srcipv4
+Identify non-standard port usage (will vary based on each client environment)
+class:bro_conn not dstport:
+["22","9100","88","389","636","53","137","138","445","123","67","68","500","80","8080","514","443","161","162","1434","5060","5061","5062","1985"]
+not protocol:icmp | groupby [srcport,dstport]
+Identify ICMP traffic
+class:bro_conn protocol:icmp | groupby [srcport,dstport]
+Identify Citrix connections grouped by country of origin
+class:bro_conn dstipv4:$external_citrix_servers connstate:"sf" | groupby srccountry 200
+Identify Citrix connections grouped by source ISP
+class:bro_conn dstipv4:$external_citrix_servers connstate:"sf" | groupby srcisp 200
+Identify Citrix connections originating from Russia, China, Ireland and grouped by duration, received bytes, and destination port
+Helix TQL Reference Guide Release 2023.1 63
+3| TQL cheatsheet and use cases
+class:bro_conn dstipv4:$external_citrix_servers srccountrycode:[ru,cn,ir] connstate:"sf" | groupby
+[duration,rcvdipbytes,dstport] 200
+Identify file transfers from outside to inside over ports 80, 443, 8080
+class:bro_conn dstisp:"target corporation" dstport:80 !srcisp:["private ip address lan","<target
+corporation>"] connstate:sf rcvdbytes:[10,1000000] | groupby srcdomain
+Bro HTTP TQL queries
+The following TQL queries are Bro HTTP queries.
+Identify most frequent useragent strings
+class:bro_http (srcisp:["YOUR COMPANY ISP NAME","private ip address lan"] not [dstisp:"YOUR COMPANY ISP
+NAME","private ip address lan"] | groupby useragent 100
+Identify least frequent useragent strings
+class:bro_http ([srcisp:["YOUR COMPANY ISP NAME","private ip address lan]) not (dstisp:["YOUR COMPANY ISP
+NAME", not ["YOUR COMPANY ISP NAME","private ip address lan"]) | groupby < useragent 1000
+Identify non-protocol compliant traffic such as SSL on an unusual port
+dstport:[8080,80,443] !class:bro_http | groupby [class,dstport,protocol]
+Identify evidence of SQL injection
+tags:http::uri_sqli
+Identify domains that contain a common string "domain.com" and resolve to IP addresses in a specific country (example
+provided: china [cn])
+srcisp:"private ip address lan" domain:"domain.com" dstcountrycode:cn | groupby [dstipv4,domain] 500
+Identify internal systems that are communicating with domains in a specific country
+srcisp:"private ip address lan" domain:"domain.com" dstcountrycode:cn | groupby [srcipv4,dstipv4,domain] 500
+Identify WinZIP, CAB, GZIP, 7ZIP, BZIP2, TAR, WinRAR archives downloaded via HTTP
+class:bro_http (srcisp:["YOUR COMPANY ISP NAME","private ip address
+lan"]) not (dstisp:["YOUR COMPANY ISP NAME","private ip
+address lan"]) (rcvdmimetype:["application/x-zip","application/x-ms-cab","application/zip","application/x-
+gzip","application/x-zip-compressed","application/x-7z-compressed","application/x-bzip2","application/x-
+tar","application/x-rar"]) httpmethod:"get" | groupby rcvdmimetype
+Identify WinRAR archives downloaded via HTTP grouped by HTTP method
+class:bro_http (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" (rcvdmimetype:"application/x-rar") | groupby httpmethod
+Identify WinRAR archives downloaded via HTTP grouped by URI
+class:bro_http (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" (rcvdmimetype:"application/x-rar") | groupby uri
+Identify executable files downloaded via HTTP grouped by URI
+64 Helix TQL Reference Guide Release 2023.1
+3| TQL cheatsheet and use cases
+class:bro_http (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR
+COMPANY ISP NAME" not dstisp:"private ip address lan" (rcvdmimetype:"application/x-dosexec" OR
+rcvdmimetype:"application/x-msdos-program") httpmethod:get | groupby uri
+Identify executable files downloaded directly (non-proxied)
+rcvdmimetype:application* srcisp:"YOUR COMPANY ISP NAME" not dstisp:"private ip address lan" not
+dstisp:"YOUR COMPANY ISP NAME" class:bro_http not srcipv4:"$proxy_external_ips" not domain:"YOURCOMPANY.COM"
+| groupby rcvdmimetype
+Identify most frequently requested domains (non-proxied) HTTP-only
+srcisp:"YOUR COMPANY ISP NAME" not dstisp:"private ip address lan" not dstisp:"YOUR COMPANY ISP NAME"
+class:bro_http not srcipv4:"$proxy_external_ips" not domain:"YOURCOMPANY.COM" | groupby domain
+Identify most frequently requested domains (non-proxied) HTTP-only grouped by country and destination IP address
+srcisp:"YOUR COMPANY ISP NAME" not dstisp:"private ip address lan" not dstisp:"YOUR COMPANY ISP NAME"
+class:bro_http not srcipv4:"$proxy_external_ips" not domain:"YOURCOMPANY.COM" | groupby [dstcountry,dstisp]
+Identify most frequently requested domains where domain name provided is IP address
+srcisp:"YOUR COMPANY ISP NAME" class:bro_http domain:/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/ |
+groupby [domain,dstcountry] 100
+Identify most common domains observed by Trellix appliances
+class:bro_http domain:(class:fireeye) | groupby domain
+Identify connections to external IP addresses on high-level ports (above 10000) grouped by destination IP address, port, domain
+class:bro_http !dstisp:["private ip address lan","target corporation"] dstport>10000 | groupby
+[dstipv4,dstport,domain,dstdomain]
+Identify zero-depth file downloads such as “/1.exe” grouped by URI
+class:bro_http domain=/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/ uri:/\/[^\/]+(exe|zip|rar|scr|7z|php)/ | groupby uri
+Bro file TQL queries
+The following TQL queries are for Bro files.
+Identify HTTP requests and responses
+has:uri has:useragent
+Identify outbound file transfers grouped by country
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" | groupby dstcountry
+Identify outbound file transfers (non-SSL) grouped by country
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" not service:ssl | groupby dstcountry
+Identify outbound file transfers greater than 1MB grouped by country
+Helix TQL Reference Guide Release 2023.1 65
+3| TQL cheatsheet and use cases
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" seenbytes>1000000 | groupby dstcountry
+Identify outbound file transfers greater than 1MB grouped by filename
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" seenbytes>"1000000" | groupby filename
+Identify outbound file transfers greater than 10MB grouped by country
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" seenbytes>10000000 | groupby dstcountry
+Identify outbound file transfers greater than 10MB grouped by filename
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" seenbytes>10000000 | groupby filename
+Identify outbound file transfers greater than 100MB grouped by country
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" seenbytes>100000000 | groupby dstcountry
+Identify outbound file transfers greater than 100MB grouped by filename
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" seenbytes>100000000 | groupby filename
+Identify the most frequent non-text files (mimetype)
+class:bro_files has:mimetype not mimetype:text* | groupby mimetype
+Identify the most frequent non-text files (mimetype) transferred from outside to inside
+class:bro_files not srcisp:"YOUR COMPANY ISP NAME" not srcisp:"private ip address lan" (dstisp:"YOUR COMPANY
+ISP NAME" OR dstisp:"private ip address lan") has:mimetype not mimetype:text* | groupby mimetype
+Identify the most frequent application types transferred from outside to inside
+class:bro_files not srcisp:"YOUR COMPANY ISP NAME" not srcisp:"private ip address lan" (dstisp:"YOUR COMPANY
+ISP NAME" OR dstisp:"private ip address lan") mimetype:application* | groupby mimetype
+Identify all files with the listed mime types that were downloaded
+class:bro_files AND
+(mimetype:["application/x-zip","application/x-ms-cab","application/zip","application/x-gzip","application/x-
+zip-compressed","application/x-7z-compressed","application/x-bzip2","application/x-tar","application/x-rar"])
+Identify all files with the listed mime types transferred from outside to inside
+class:bro_files not srcisp:"YOUR COMPANY ISP NAME" not srcisp:"private ip
+address lan" (dstisp:"YOUR COMPANY ISP NAME" OR dstisp:"private ip
+address lan") (mimetype:["application/x-zip","application/x-ms-cab","application/zip","application/x-
+gzip","application/x-zip-compressed","application/x-7z-compressed","application/x-bzip2","application/x-
+tar","application/x-rar"]) | groupby mimetype
+Identify all files with the listed mime types transferred from inside to outside
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip
+address lan") not dstisp:"YOUR COMPANY ISP NAME" not dstisp:"private
+ip address lan" (mimetype:["application/x-zip","application/x-ms-cab","application/zip","application/x-
+66 Helix TQL Reference Guide Release 2023.1
+3| TQL cheatsheet and use cases
+gzip","application/x-zip-compressed","application/x-7z-compressed","application/x-bzip2","application/x-
+tar","application/x-rar"]) | groupby mimetype
+Identify all WinRAR archives (mimetype)
+class:bro_files has:filename mimetype:"application/x-rar" | groupby filename
+Identify all WinRAR archives (mimetype) transferred from outside to inside
+class:bro_files not srcisp:"YOUR COMPANY ISP NAME" not srcisp:"private ip address lan" (dstisp:"YOUR COMPANY
+ISP NAME" OR dstisp:"private ip address lan") has:filename mimetype:"application/x-rar" | groupby filename
+Identify all WinRAR archives (mimetype) transferred from outside to inside grouped by country
+class:bro_files not srcisp:"YOUR COMPANY ISP NAME" not srcisp:"private ip address lan" (dstisp:"YOUR
+COMPANY ISP NAME" OR dstisp:"private ip address lan") has:filename mimetype:"application/x-rar" | groupby
+[srccountry,srcisp]
+Identify all WinRAR archives (mimetype) transferred from inside to outside
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" has:filename mimetype:"application/x-rar" | groupby filename
+Identify all WinRAR archives (mimetype) transferred from inside to outside grouped by country
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR
+COMPANY ISP NAME" not dstisp:"private ip address lan" has:filename mimetype:"application/x-rar" | groupby
+[dstcountry,dstisp]
+Identify all executable files (mimetype)
+class:bro_files (mimetype:"application/x-dosexec" OR mimetype:"application/x-msdos-program") | groupby
+filename
+Identify all executable files (mimetype) transferred from outside to inside grouped by mimetype
+class:bro_files not stisp:"YOUR COMPANY ISP NAME" OR dstisp:"private ip address lan")
+(mimetype:"application/x-dosexec" OR mimetype:"application/x-msdos-program") | groupby mimetype
+Identify all executable files (mimetype) transferred from inside to outside grouped by mimetype
+class:bro_files (srcisp:"YOUR COMPANY ISP NAME" OR srcisp:"private ip address lan") not dstisp:"YOUR COMPANY
+ISP NAME" not dstisp:"private ip address lan" (mimetype:"application/x-dosexec" OR mimetype:"application/x-
+msdos-program") | groupby mimetype
+Identify WinRAR archives (mimetype) without “.rar” file extension
+class:bro_files has:filename not filename:/\.rar$/ mimetype:"application/x-rar" not service:smtp | groupby
+filename
+Identify executable files (mimetype) without “.exe” extension
+class:bro_files has:filename not filename:/\.exe$/ (mimetype:"application/x-dosexec" OR
+mimetype:"application/x-msdos-program") not service:smtp | groupby filename
+Bro notice TQL queries
+The following TQL queries are Bro Notice queries. Zeek (formerly Bro) calls the NOTICE function when it detects suspicious
+activity leaving the network.
+Helix TQL Reference Guide Release 2023.1 67
+3| TQL cheatsheet and use cases
+Identify evidence of SQL injection, port scans, invalid certs, etc.
+Note
+Result categories may include ssl:invalid_server_cert, traceroute::detected, proto, scan::port_scan,
+scan::address_scan, http::sql_injection_attacker, enum, weird::activity, packetfilter::dropped_packets,
+http::sql_injection_victim, and ssh::password_guessing
+class:bro_notice | groupby category
+Identify HTTP traffic which is not traversing the proxy as expected
+class:bro_http !metaclass:http_proxy
+Identify evidence of SQL injection and port scans
+class:bro_notice !srcisp:["private ip address lan","<target corporation name>"] action:notice::action_log |
+groupby dstport
+Identify sources of port scanning grouped by source IP address and destination port
+class:bro_notice category:scan::address_scan !srcisp:"private ip address lan" !srcisp:"<target corporation>"
+| groupby [srcipv4,dstport]
+Identify invalid SSL server certificate validation
+class:bro_notice !srcisp:"private ip address lan" !srcisp:"<target corporation>" action:notice::action_log
+dstisp:"private ip address lan" category:ssl::invalid_server_cert | groupby [srcipv4,dstipv4]
+Identify possible SQL injection grouped by source IP address
+class:bro_notice category:http::sql_injection_attacker !srcisp:"private ip address lan" !srcisp:"<target
+corporation>" | groupby srcipv4
+Identify possible SQL injection grouped by destination IP address
+class:bro_notice category:http::sql_injection_victim dstisp:"private ip address lan" | groupby dstipv4
+Bro DNS TQL queries
+The following TQL queries are Bro DNS queries.
+Identify internal systems attempting to resolve domains containing "domain.com" in a specific country
+class:bro_dns srcisp:"private ip address lan" domain:"domain.com" srcisp:"private ip address lan"
+domain:"domain.com" dstcountrycode:cn
+Identify frequently requested DNS domain names
+class:bro_dns not srcport:137 | groupby domain
+Identify infrequently requested DNS domain names (may require tuning)
+class:bro_dns not srcport:137 not domain:"in-addr.arpa" not domain:"ip6.arpa" | groupby < domain 1000
+68 Helix TQL Reference Guide Release 2023.1
+3| TQL cheatsheet and use cases
+Bro FTP TQL queries
+The following TQL queries are Bro FTP queries.
+Identify the most frequent FTP accounts
+class:bro_ftp | groupby username 100
+Identify the most frequent FTP account and IP address pairs
+class:bro_ftp | groupby [username,srcipv4,dstipv4] 100
+Bro SSH TQL queries
+The following TQL query is a Bro SSH query.
+Identify all SSH sessions, source and destination
+class:bro_ssh | groupby [srcipv4,dstipv4]
+Bro software TQL queries
+The following TQL queries are Bro software queries.
+Identify IIS servers and versions
+class:bro_software application:"microsoft-iis" | groupby content
+Identify Tomcat servers and versions
+class:bro_software application:"java" | groupby content
+Identify Apache servers and versions
+class:bro_software application:"apache" | groupby content
+Identify PHP-enabled servers and versions
+class:bro_software application:"php" | groupby content
+Bro Tunnel TQL queries
+The following TQL query is a Bro tunnel query.
+Identify connections being tunneled through a SOCKS proxy
+class:bro_tunnels !dstisp:"private ip address lan" !dstisp:"<target corporation>" metaclass:connection
+category:tunnel::socks | groupby [srcipv4,dstipv4]
+Bro SMTP TQL queries
+Helix TQL Reference Guide Release 2023.1 69
+3| TQL cheatsheet and use cases
+The following TQL query is a Bro SMTP query.
+Identify outbound SMTP connections
+connectionid:"<connid>" class:bro_smtp | groupby [to,from,subject]
+Use case TQL queries
+The following TQL queries are for general use cases.
+Windows login and logoff events, to show Windows events, formatted in a table
+class:ms_windows_event eventid:[4624,4634,4647,4648,4672,4688] has:username | table
+[hostname,username,eventid,service,severity,process,msg,accountdomain]
+Windows events that could indicate lateral movement, commands executed with arguments
+class=ms_windows_event has:args has:username | table [username,args] | groupby username
+Failed connections to a single IP
+application="unacknowledged connections" | groupby [dstipv4, connections] | sort > connections | table
+[connections, dstipv4, srcipv4]
+SSH from the usual suspects
+srccountrycode=[cn,kr,ru] class:bro_ssh | table [eventtimeutc, srcipv4, dstipv4, srccountrycode,
+dstcountrycode] | sort < eventtime
+SMTP traffic from an unauthorized host
+!srcipv4=$server_smtp_ipv4s AND class:bro_conn AND dstport=25 | groupby [srcipv4]
+Excessive SMTP traffic outbound
+srcipv4:(application="outbound non-local traffic connection count anomalies" | table srcipv4) AND
+class:bro_conn AND dstport=25
+Analytics logins from physical places that are not feasible in a time span
+class=analytics application="non-vpn geo-infeasibility detector" | table [domain, username, description]
+Excessive web or email traffic outbound
+srcip:(application="outbound non-local trafov4fic connection count anomalies" | table srcipv4) AND
+dstport=[25,80] AND protcol=tcp| groupby [srcipv4, dstport] | table [srcipv4, dstport]
+Excessive traffic inbound (for example, streaming and web traffic)
+class:bro_files mimetype="application/octet-stream" total_bytes>104857600
+HTTP transactions over non-standard ports with the usual suspects as destination
+class=bro_http !dstport=[80,8080] AND dstcountrycode=[cn,kr,ru] | table
+[srcipv4,dstcountrycode,domain,dstport,uri]
+Excessive access to a malicious website from a single internal source
+70 Helix TQL Reference Guide Release 2023.1
+3| TQL cheatsheet and use cases
+class:intel_hit program:bro_http
+class:intel_hit program:bro_http AND !intelscore=low | groupby srcipv4 | table [srcipv4, intelmatchvalue,
+intelscore,domain,uri ] | sort < srcipv4
+Large files sent out to the usual suspects over non-standard ports
+sentipbytes>250000 !dstport=[80,8080] dstcountrycode=[cn,ro,ua,sy,ir,ru,kr] | groupby count | table
+[meta_ts, class, duration, srcipv4, srccountrycode, dstipv4, dstcountrycode, dstport, sentbytes, rcvdbytes]
+| sort > sentbytes
+Compressed files to or from the usual suspects
+class:bro_files mimetype:$compressed_mimes dstcountrycode=[cn,ro,ua,sy,ir,ru,kr] | table
+[meta_ts,srcipv4,dstipv4,dstcountrycode,mimetype,seenbytes] | sort > dstipv4
+Accessing a malicious website from multiple internal sources
+class:intel_hit program:bro_http AND !intelscore=low | groupby domain | table [ intelmatchvalue, srcipv4,
+intelscore,domain,uri ] | sort < domain
+Excessive connections to multiple hosts from a single host
+class:bro_conn | groupby field = [srcipv4,dstipv4] threshold:10000
+Excessive port blocking attempts from antivirus or other monitoring systems
+class=cisco_asa action=deny srcipv4:["10.0.0.0/8","172.16.0.0/12","192.168.0.0/16"] AND !dstipv4:
+["10.0.0.0/8","172.16.0.0/12","192.168.0.0/16"] | groupby field = srcipv4 threshold:15
+External Scanning
+has:category category=scan::address_scan !srcipv4:["10.0.0.0/8","172.16.0.0/12","192.168.0.0/16"]
+application="unacknowledged connections"| table [eventtimeutc, msg, srccountry, srcdomain, srcipv4, srcisp]
+Anomaly in user access and authentication baselines
+class=analytics application="loginanomalies" | groupby username | table [username, description, eventtimeutc]
+Anomaly in network baselines
+application="outbound non-local traffic connection count anomalies" | groupby [srcipv4,count] | table
+[srcipv4, description]
+Multiple infected hosts detected on a subnet
+class=fireeye_nx msg=ips-event | groupby srcipv4 | table [srcipv4, srcport, dstipv4, dstport, eventlog]
+srcipv4:(class=fireeye_nx msg=malware-callback OR msg=ips-event OR msg=malware-object) AND
+srcipv4=["144.155.0.0/16"] AND class=fireeye_nx| groupby msg | table [srcipv4, dstipv4, eventlog ]
+Identified Tor Exit node match
+has:context_tags context_tags:tor_exit | groupby [srcipv4, dstipv4]
+Find internal servers using Google for DNS
+protocol:udp dstport:53 dstipv4:["8.8.4.4","8.8.8.8"] srcisp:"private ip address lan" | groupby srcipv4
+Helix TQL Reference Guide Release 2023.1 71
+3| TQL cheatsheet and use cases
+Example subsearch: Take all source IP addresses from intel hits and compare them to the bro_files log to see which ones
+downloaded an EXE file
+srcipv4:(class:intel_hit) class:bro_files mimetype:"application/x-dosexec"
+Find all inbound port 22 (SSH) connections
+class:cisco_asa direction:inbound NOT (action:deny OR action:denied) dstport:22 |groupby [dstport,dstdomain]
+Display list of logon attempts with good username but bad password by username and eventid
+class:ms_windows_event eventid:[680,4776] errormessage:"0xC000006A" | groupby [username,eventid]
+Changes to the Domain Admins group
+Admins class:ms_windows_event eventid:4728 OR eventid:4729
+Very broad potential exfil rule
+class:bro_files mimetype:"application/x-rar"
+class=bluecoat_http_proxy NOT uri=/.*chrome.*/ NOT uri="/msdownload/update/*" uri=/.*\.exe/ uri=/.*rar.*/ |
+groupby [uri,srcipv4,username,result]
+class=bluecoat_http_proxy filter="malicious_sources/malnets" | groupby domain
+Names with dashes "-"
+/.*host-name.*/
+Histogram
+program:kernel has(class) | histogram meta_ts hour
+Palo Alto Networks (PAN) - Show large data transfers by service
+class:paloalto_traffic sentbytes>11795 | groupby service
+Regex example: Find all Snort alerts that contain "a network trojan"
+class:snort AND rulecat=/.*(a network trojan).*/
+Find foreign VPN logins in Cisco VPN logs
+username:(class:cisco_vpn not srccountrycode:us NOT srcisp:"private ip address lan") AND
+program:"cscoacs_radius_accounting"
+Metaclass http_proxy TQL queries
+The following TQL queries are for the http_proxy metaclass.
+Identify IPs requested as direct URLs
+metaclass:http_proxy !domain:10.* domain:/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/ | groupby domain
+Identify potential data theft through pastebin.com
+72 Helix TQL Reference Guide Release 2023.1
+3| TQL cheatsheet and use cases
+Identify all source IPv4 addresses that uploaded compromised text documents with a payload size greater than 0 to
+pastebin.com.
+metaclass:http_proxy domain:"pastebin.com" (httpmethod:["put","post"]) sentbytes>0 | groupby
+[srcipv4,sentbytes]
+Identify least frequently used useragent strings
+metaclass:http_proxy | groupby < useragent 50
+Nonspecific evidence TQL queries
+The following TQL queries are for non-specific evidence.
+Identify directory traversal attempts that do not originate from the trusted network 10.0.0.0 grouped by source IP address and
+URI
+!srcisp:"private ip address lan" !srcipv4:10.0.0* uri:"/../../*" | groupby [srcipv4,uri]
+Identify traffic being routed through countries that are not the US, Canada, or India grouped by destination country
+!dstisp:"private ip address lan" !dstcountry:["united states", "canada","india"] | groupby dstcountry 1000
+Identify files being transferred to Russia grouped by mimetype
+dstcountry:"russian federation" | groupby mimetype 100
+Identify unencrypted (non-proxied) traffic greater than 1MB grouped by mimetype
+!class:bluecoat_http_proxy class:bro_files !service:ssl bytes>1000000 !dstisp:["<target corporation>","ip
+address lan"] | groupby [mimetype]
+Identify unencrypted (non-proxied) traffic greater than 1GB grouped by source IP address and destination ISP
+!class:bluecoat_http_proxy metaclass:file_xfer !dstisp:["private ip address lan","<target corporation>"]
+bytes>10000000 | groupby [srcipv4,dstisp]
+Identify HTTP traffic that is leaking around the BlueCoat web proxy
+!class:bluecoat_http_proxy metaclass:http_proxy !dstisp:["private ip address lan","<target corporation>"] |
+groupby [srcipv4,dstisp]
+Identify inside to outside traffic (non-proxied) greater than 1GB and grouped by service type
+srcipv4="10.0.0.0/8" dstipv4!="10.0.0.0/8" dstipv4!="
+172.0.0.0/8" dstipv4!="161.0.0.0/8" dstipv4!="162.0.0.0/8" seenbytes>10000000 |groupby service
+Juniper VPN evidence TQL queries
+The following TQL query is for Juniper VPN evidence.
+Identify VPN logins grouped by username and source IP address
+class:juniper_vpn msg:login* | groupby [username,srcisp]
+Helix TQL Reference Guide Release 2023.1 73
+3| TQL cheatsheet and use cases
+Cisco ASA evidence TQL queries
+The following TQL query is for Cisco ASA evidence.
+Identify IP addresses performing scans of the external environment
+class:cisco_asa_threat_detection | groupby policy
+BlueCoat http_proxy TQL queries
+The following TQL queries are for BlueCoat http_proxy.
+Identify the top domains blocked by proxy policy
+class:bluecoat_http_proxy exceptiontype:policy_denied | groupby domain
+Identify the bottom domains blocked by proxy policy
+class:bluecoat_http_proxy exceptiontype:policy_denied | groupby < domain 100
+Identify actions and exceptions generated by the BlueCoat web proxy
+class:bluecoat_http_proxy | groupby [action,exceptiontype]
+Identify the top categories blocked by the BlueCoat web proxy
+class:bluecoat_http_proxy | groupby exceptiontype
+74 Helix TQL Reference Guide Release 2023.1
+COPYRIGHT
+Copyright © 2025 Musarubra US LLC.
+Trellix and FireEye are the trademarks or registered trademarks of Musarubra US LLC, FireEye Security Holdings US LLC, and their affiliates in the
+US and /or other countries. Other names and brands are the property of these companies or may be claimed as the property of others.
