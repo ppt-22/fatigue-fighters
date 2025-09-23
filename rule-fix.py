@@ -25,7 +25,9 @@ def collect_closed_alerts_from_helix(alerts_data):
 			'closing_state': alerts_data['closed_state'][i],
 			'alert_type_details': alerts_data['alert_type_details'][i],
 			'search_query': alerts_data['search'][i],
-			'is_tuned': alerts_data['is_tuned'][i]	
+			'is_tuned': alerts_data['is_tuned'][i],
+			'events_threshold': alerts_data['events_threshold'][i],
+			'seconds_threshold' : alerts_data['seconds_threshold'][i]
 		}
 		processed_alerts.append(processed_alert)
 
@@ -90,15 +92,19 @@ def create_claude_context_for_helix(rule_definition, fp_examples, rule_stats, ta
 	taxonomy_notes = get_text_from_file(taxonomy_file)
 	mql_syntax = get_text_from_file(mql_file)
 
+
 	# Create a prompt that provides Helix-specific structure and context
 	prompt = f"""As an advanced Security Operations Center (SOC) assistant powered by an LLM, analyze the following security alert details and analyst investigation notes. Pay close attention to the 'message', 'closed_state', 'closed_reason', and any relevant 'distinguishers' or 'tuning_search' parameters. Your objective is to suggest granular rule tuning to eliminate recurring False Positives (FPs).
 
 		RULE DEFINITION:
-		Rule ID: {rule_definition.get('trigger_id', 'N/A')}
+		Rule ID: {rule_definition.get('rule_id', 'N/A')}
 		Rule Name: {rule_definition.get('message', 'N/A')}
 		Search Query: {rule_definition.get('search', 'N/A')}
 		Severity: {rule_definition.get('severity', 'N/A')}
-		Description: {rule_definition.get('description','N/A')}         
+		Description: {rule_definition.get('description','N/A')}
+		Events Threshold: {rule_definition.get('events_threshold','1')}
+		Seconds Threshold: {rule_definition.get('seconds_threshold','60')} 
+		Distinguishers: {rule_definition.get('distinguishers','N/A')}        
 
 		FALSE POSITIVE EXAMPLES:
 		{format_helix_examples(sample_examples)}
@@ -120,8 +126,8 @@ def create_claude_context_for_helix(rule_definition, fp_examples, rule_stats, ta
 		**3. Root Cause Analysis:**
 		[Explanation of why the rule is triggering incorrectly. Determine if the rule is not properly honoring exclusions, lists, or logic in the query.]
 
-		**4. Recommended Rule Modifications:**
-		[Specific query changes, exclusions, or thresholds to add. If modifying the existing search or tuning_search, provide the EXACT new Helix query syntax. If adding new logic, provide the full proposed segment. Please strictly follow the toxonomy and query language notes provided to you.]
+		**4. Rule Modifications:**
+		[Specific query changes, exclusions, or thresholds to add. If modifying the existing rule query, provide the EXACT new Helix rule query syntax. If adding new logic, provide the full proposed segment. Please strictly follow the toxonomy and query language notes provided to you.]
 
 		**5. Summary**
 		[Summarize the above points (Keep it short and crisp)]
@@ -178,6 +184,12 @@ def analyse(file_path):
 			rule_stat = {
 				'rule_id': rule_id,
 				'rule_name': group['rule_name'].iloc[0],
+				'rule_severity': rule_definition.get('severity','N/A'),
+				'rule_search': rule_definition.get('search','N/A'),
+				'event_threshold': rule_definition.get('events_threshold','1'),
+				'sec_threshold': rule_definition.get('seconds_threshold','60'),
+				'is_tuned': rule_definition.get('is_tuned',False),
+				'distinguishers': rule_definition.get('distinguishers','N/A'),
 				'total_alerts': total_alerts,
 				'false_positives': fp_alerts,
 				'fp_percentage': fp_percentage
@@ -198,10 +210,10 @@ def analyse(file_path):
 			response_body = response_body.get("content")
 			console = Console()
 			for i in range(len(response_body)):
-				folder_path = f"{dirname}/outputs/{datetime.now().strftime('%Y%m%d')}"
+				folder_path = f"{dirname}/outputs/{datetime.now().strftime('%Y%m%d%H%M')}"
 				if not os.path.isdir(folder_path):
 					os.mkdir(folder_path)
-				report_path = os.path.join(f"{dirname}/outputs/{datetime.now().strftime('%Y%m%d')}", f"report_{rule_id}.md")
+				report_path = os.path.join(folder_path, f"report_{rule_id}.md")
 				with open(report_path,"w") as mf:
 					mf.write(response_body[i]["text"])
 					console.print(Markdown(response_body[i]["text"]))

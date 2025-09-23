@@ -16,17 +16,32 @@ def get_text_from_file(file_path):
     except Exception as e:
         print(f"An error occurred while reading the file: {e}")
         return None
+def parse_json_object(json_string):
+    """Parses a JSON string into a Python dictionary."""
+    try:
+        data = json.loads(json_string)
+        return list(data.keys()) 
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON format")
+        return None
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return None
 
 def load_rules_from_alerts(alerts_df):
     rules_dict = {}
     json_alerts = json.loads(alerts_df.to_json(orient="records"))
     for alert in json_alerts:
         rules_dict[alert["trigger_id"]] = {
-            "id": alert.get("trigger_id","N/A"),
+            "rule_id": alert.get("trigger_id","N/A"),
             "message": alert.get("message","N/A"),
             "search": alert.get("search","N/A") + alert.get("tuning_search",""),
             "severity": alert.get("severity","N/A"),
-            "description": alert.get("description","N/A")
+            "description": alert.get("description","N/A"),
+            "seconds_threshold": alert.get("seconds_threshold","60"),
+            "events_threshold": alert.get("events_threshold","1"),
+            "is_tuned": alert.get("is_tuned",False),
+            "distinguishers": parse_json_object(alert.get("distinguishers","[]")) 
             }
     return rules_dict
 
