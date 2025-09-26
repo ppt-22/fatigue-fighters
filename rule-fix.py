@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 from datetime import datetime, timedelta
-from local import local_main, get_text_from_file
+from utils import utils_main, get_text_from_file
 import boto3
 import os
 import click
@@ -143,7 +143,7 @@ def analyse(file_path):
 	mql_file = os.path.join(dirname, 'notes/MQL.txt')
 	# 1. Collect historical alert data from Helix
 	print("Collecting alert data from Helix...")
-	alerts_data,rule_dict = local_main(file_path)
+	alerts_data,rule_dict = utils_main(file_path)
 	alerts_df = collect_closed_alerts_from_helix(alerts_data)
 
 	# 2. Parse Helix-specific data

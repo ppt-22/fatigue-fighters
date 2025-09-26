@@ -1,0 +1,7 @@
+boto3==1.40.17
+click==8.3.0
+jsonlines==4.0.0
+pandas==2.3.2
+PyYAML==6.0.2
+PyYAML==6.0.3
+rich==14.1.0
